@@ -1,0 +1,18 @@
+FROM golang:1.10-alpine AS build
+
+RUN apk add --update make bash curl docker sudo git
+
+WORKDIR /install
+
+COPY .travis/* ./
+
+RUN chmod +x *.sh \
+ && ./install_dep.sh \
+ && ./install_operator_sdk.sh \
+ && find . -type f ! -name '*.sh' -delete
+
+RUN ln -s /go/src/github.com/edgelevel/lastpass-operator /workspace
+
+WORKDIR /workspace
+
+RUN echo "make docker-build tag=latest" > /root/.bash_history
