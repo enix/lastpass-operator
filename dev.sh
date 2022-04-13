@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "*
 !.travis" > .dockerignore
 docker build . -f Dockerfile-dev -t lastpass-operator-dev

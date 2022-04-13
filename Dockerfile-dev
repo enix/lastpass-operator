@@ -1,6 +1,6 @@
-FROM golang:1.10-alpine AS build
+FROM golang:1.12-alpine AS build
 
-RUN apk add --update make bash curl docker sudo git
+RUN apk add --update make bash curl docker sudo git gcc
 
 WORKDIR /install
 
@@ -13,6 +13,12 @@ RUN chmod +x *.sh \
 
 RUN ln -s /go/src/github.com/edgelevel/lastpass-operator /workspace
 
+RUN adduser -D -u 1001 dev
+
+USER dev
+
 WORKDIR /workspace
 
-RUN echo "make docker-build tag=latest" > /root/.bash_history
+ENV GO111MODULE=on
+
+RUN echo "make docker-build tag=latest" > /home/dev/.bash_history
